@@ -75,7 +75,7 @@ class KNearestNeighbor:
                 # not use a loop over dimension, nor use np.linalg.norm().          #
                 #####################################################################
                 # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-                dists[i, j] = ((X[i] - self.X_train[j]) ** 2).sum()
+                dists[i, j] = ((X[i] - self.X_train[j]) ** 2).sum() ** 0.5
                 # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
@@ -97,7 +97,7 @@ class KNearestNeighbor:
             # Do not use np.linalg.norm().                                        #
             #######################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            dists[i, :] = ((self.X_train - X[i]) ** 2).sum(axis=1)
+            dists[i, :] = ((self.X_train - X[i]) ** 2).sum(axis=1) ** 0.5
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
@@ -129,7 +129,7 @@ class KNearestNeighbor:
         # trick with dimensions (matrix + row as matrix + column as matrix)
         dists = - 2 * (X @ self.X_train.T).T + (X ** 2).sum(axis=1).reshape(1, -1) + \
                 (self.X_train ** 2).sum(axis=1).reshape(-1, 1)
-        dists = dists.T
+        dists = dists.T ** 0.5
         
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
