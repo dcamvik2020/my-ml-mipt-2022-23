@@ -33,7 +33,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE    
-        return 
+        return np.mean(np.abs(X.dot(w) - Y))
 
     @staticmethod
     def l2_reg(w):
@@ -47,7 +47,7 @@ class LossAndDerivatives:
         """
         
         # YOUR CODE HERE
-        return 
+        return (w ** 2).sum()
 
     @staticmethod
     def l1_reg(w):
@@ -61,7 +61,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        return (np.abs(w)).sum()
 
     @staticmethod
     def no_reg(w):
@@ -87,7 +87,8 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+#         d(Xw - Y, Xw - Y) = d((Xw, Xw) - 2(Xw, Y)) = 2 * (X^T Xw, dw) - 2 * (X^T Y, dw)
+        return (2 * (X.T.dot(X.dot(w) - Y))) / len(X) / (1 if len(w.shape) == 1 else w.shape[1])
 
     @staticmethod
     def mae_derivative(X, Y, w):
@@ -102,11 +103,19 @@ class LossAndDerivatives:
         w.r.t. w weight matrix.
         
         Please mention, that in case `target_dimentionality` > 1 the error is averaged along this
-        dimension as well, so you need to consider that fact in derivative implementation.
+        dimension as well, so you need to consider that fact in derivative implementation. 
         """
 
         # YOUR CODE HERE
-        return 
+        # d = 1 ---> simple regression
+        # d |x^T @ w - y| = ?
+        #        x^T @ w - y > 0 : x
+        #        x^T @ w - y < 0 : -x
+        # 
+        deriv = X.T.dot(np.sign(X.dot(w) - Y))
+        for i in np.shape(Y):
+            deriv /= i
+        return deriv
 
     @staticmethod
     def l2_reg_derivative(w):
@@ -119,7 +128,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        return 2 * w
 
     @staticmethod
     def l1_reg_derivative(w):
@@ -133,7 +142,7 @@ class LossAndDerivatives:
         """
 
         # YOUR CODE HERE
-        return 
+        return np.sign(w) # not w > 0 ... it is 1 and 0 ...
 
     @staticmethod
     def no_reg_derivative(w):
